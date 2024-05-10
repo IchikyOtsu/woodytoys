@@ -1,0 +1,16 @@
+$TTL 86400
+@ IN SOA ns.woodytoysl2-10.com. hostmaster.woodytoysl2-10.com. (
+    2023051001  ; Serial
+    3600        ; Refresh
+    1800        ; Retry
+    604800      ; Expire
+    86400       ; Minimum TTL
+)
+
+; Name Server Record
+@ IN NS ns.woodytoysl2-10.com.
+
+; Address Records
+@ IN A 54.37.15.108
+www IN A 54.37.15.108
+cdn IN CNAME cl-gl20a138e0.gcdn.co.
