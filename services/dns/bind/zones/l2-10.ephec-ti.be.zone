@@ -16,3 +16,4 @@ $TTL 86400
 ; Address records
 ns IN A 54.37.15.108
 www IN A 54.37.15.108
+cdn CNAME cl-gl20a138e0.gcdn.co.
