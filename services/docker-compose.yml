@@ -20,7 +20,10 @@ services:
 
   front:
     image: ichiky/woody_front:latest
-
+    
+  redis:
+    image: redis:latest
+    
   reverse:
     image: ichiky/woody_rp:latest
     ports:
