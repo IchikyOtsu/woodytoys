@@ -2,9 +2,9 @@ version: "3.9"
 
 services:
   db:
-    build: ./database
+    image: ichiky/woody_database:latest
     cap_add:
-      - SYS_NICE
+      - SYS_NICE  
     restart: always
     environment:
       - MYSQL_DATABASE=woody
@@ -13,16 +13,16 @@ services:
       - '3306:3306'
 
   api:
-    build: ./api
+    image: ichiky/woody_api:latest
     restart: always
     links:
       - "db"
 
   front:
-    build: ./front
+    image: ichiky/woody_front:latest
 
   reverse:
-    build: ./reverse-proxy
+    image: ichiky/woody_rp:latest
     ports:
       - "80:8080"
     depends_on:
