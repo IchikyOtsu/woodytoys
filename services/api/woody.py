@@ -11,17 +11,41 @@ from werkzeug.serving import run_simple
 from mysql.connector import connect, Error
 from time import sleep
 
+import os
+
 LONG_WAIT_TIME = 5  # seconds
 SHORT_WAIT_TIME = 5
 
 
-def my_connect():
+def write_connect():
     # note, c'est une mauvaise idée de recréer la connection à chaque requète
     # (c'est surtt pour une question de performance)
     # Mais ici, ce n'est pas la performance qu'on cherche ;)
 
+    master_db_host = os.environ.get('MYSQL_HOST_MASTER')
+    db_database = os.environ.get('MYSQL_DATABASE')
+    db_password = os.environ.get('MYSQL_ROOT_PASSWORD')
+
     try:
-        mydb = connect(host='db', user='root', password='pass', database='woody', port=3306)
+        mydb = connect(host=master_db_host, user='root', password=db_password, database=db_database, port=3306)
+        mycursor = mydb.cursor()
+    except Error as e:
+        print(e)
+        return None, None
+    return mydb, mycursor
+
+
+def read_connect():
+    # note, c'est une mauvaise idée de recréer la connection à chaque requète
+    # (c'est surtt pour une question de performance)
+    # Mais ici, ce n'est pas la performance qu'on cherche ;)
+
+    slave_db_host = os.environ.get('MYSQL_HOST_SLAVE')
+    db_database = os.environ.get('MYSQL_DATABASE')
+    db_password = os.environ.get('MYSQL_ROOT_PASSWORD')
+
+    try:
+        mydb = connect(host=slave_db_host, user='root', password=db_password, database=db_database, port=3306)
         mycursor = mydb.cursor()
     except Error as e:
         print(e)
@@ -30,7 +54,7 @@ def my_connect():
 
 
 def get_last_product():
-    mydb, mycursor = my_connect()
+    mydb, mycursor = read_connect()
 
     mycursor.execute("LOCK TABLES product READ;")
 
@@ -64,7 +88,7 @@ def make_heavy_validation(order):
 
 
 def add_product(product):
-    mydb, mycursor = my_connect()
+    mydb, mycursor = write_connect()
     query = f"INSERT INTO woody.product ( name) VALUES ('{product}');"
 
     mycursor.execute(query)
@@ -79,7 +103,7 @@ def launch_server(app, host='0.0.0.0', port=5000):
 
 
 def save_order(order_id, status, product):
-    mydb, mycursor = my_connect()
+    mydb, mycursor = write_connect()
     query = f"INSERT INTO woody.order (order_id, status, product) VALUES ('{order_id}', '{status}', '{product}');"
 
     mycursor.execute(query)
@@ -90,7 +114,7 @@ def save_order(order_id, status, product):
 
 
 def get_order(order_id):
-    mydb, mycursor = my_connect()
+    mydb, mycursor = read_connect()
     query = f"SELECT status FROM woody.order WHERE order_id='{order_id}';"
 
     mycursor.execute(query)
