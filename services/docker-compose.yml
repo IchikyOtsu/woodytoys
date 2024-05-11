@@ -15,7 +15,7 @@ services:
       retries: 3
       start_period: 30s
     networks:
-      - db_network
+      - db
 
   slave_db:
     image: ichiky/woody_slave_database:latest
@@ -33,28 +33,65 @@ services:
       retries: 3
       start_period: 30s
     networks:
-      - db_network
+      - db
   api:
     image: ichiky/woody_api:latest
-    restart: always
-    links:
-      - "db"
+    depends_on:
+      - redis
+    environment:
+      - MYSQL_DATABASE=woody
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_HOST_MASTER=master_db
+      - MYSQL_HOST_SLAVE=slave_db
+      - REDIS_HOST=redis
+    networks:
+      - db
+      - api
+      - cache
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/ping"]
+      interval: 3m
+      timeout: 20s
+      retries: 3
+      start_period: 20s
   api2:
     image: ichiky/woody_apisec:latest
-    restart: always
-    links:
-      - "db"
+    depends_on:
+      - redis
+    environment:
+      - MYSQL_DATABASE=woody
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_HOST_MASTER=master_db
+      - MYSQL_HOST_SLAVE=slave_db
+      - REDIS_HOST=redis
+    networks:
+      - db
+      - api
+      - cache
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/ping"]
+      interval: 3m
+      timeout: 20s
+      retries: 3
+      start_period: 20s
   front:
     image: ichiky/woody_front:latest
+    networks:
+      - front
     
   redis:
-    image: redis:latest
+    image: redis:6.2-alpine
+    networks:
+      - cache
     
   reverse:
     image: ichiky/woody_rp:latest
     ports:
       - "5173:5173"
     depends_on:
+      - front
+      - api
+    networks:
       - front
       - api
       
@@ -64,4 +101,7 @@ services:
       - "5672:5672"
       - "15672:15672"
 networks:
-  db_network: 
+  api:
+  cache:
+  db:
+  front:
