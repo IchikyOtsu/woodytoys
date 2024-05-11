@@ -2,7 +2,7 @@
 
 set -e
 
-default_version="17"
+default_version="18"
 
 version=${1:-"$default_version"}
 
