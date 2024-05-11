@@ -22,8 +22,12 @@ def write_connect():
     # (c'est surtt pour une question de performance)
     # Mais ici, ce n'est pas la performance qu'on cherche ;)
 
+    master_db_host = os.environ.get('MYSQL_HOST_MASTER')
+    db_database = os.environ.get('MYSQL_DATABASE')
+    db_password = os.environ.get('MYSQL_ROOT_PASSWORD')
+
     try:
-        mydb = connect(host='master_db', user='root', password='pass', database='woody', port=3306)
+        mydb = connect(host=master_db_host, user='root', password=db_password, database=db_database, port=3306)
         mycursor = mydb.cursor()
     except Error as e:
         print(e)
@@ -36,8 +40,12 @@ def read_connect():
     # (c'est surtt pour une question de performance)
     # Mais ici, ce n'est pas la performance qu'on cherche ;)
 
+    slave_db_host = os.environ.get('MYSQL_HOST_SLAVE')
+    db_database = os.environ.get('MYSQL_DATABASE')
+    db_password = os.environ.get('MYSQL_ROOT_PASSWORD')
+
     try:
-        mydb = connect(host='slave_db', user='root', password='pass', database='woody', port=3306)
+        mydb = connect(host=slave_db_host, user='root', password=db_password, database=db_database, port=3306)
         mycursor = mydb.cursor()
     except Error as e:
         print(e)
