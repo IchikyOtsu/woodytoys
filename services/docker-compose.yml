@@ -8,8 +8,6 @@ services:
     environment:
       - MYSQL_DATABASE=woody
       - MYSQL_ROOT_PASSWORD=pass
-    networks:
-      - db
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
       interval: 3m
@@ -26,8 +24,6 @@ services:
     environment:
       - MYSQL_DATABASE=woody
       - MYSQL_ROOT_PASSWORD=pass
-    networks:
-      - db
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
       interval: 3m
