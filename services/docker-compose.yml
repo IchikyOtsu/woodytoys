@@ -1,17 +1,39 @@
 version: "3.9"
 
 services:
-  db:
-    image: ichiky/woody_database:latest
+  master_db:
+    image: ichiky/woody_master_database:latest
     cap_add:
-      - SYS_NICE  
-    restart: always
+      - SYS_NICE
     environment:
       - MYSQL_DATABASE=woody
       - MYSQL_ROOT_PASSWORD=pass
-    ports:
-      - '3306:3306'
+    networks:
+      - db
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 3m
+      timeout: 20s
+      retries: 3
+      start_period: 30s
 
+  slave_db:
+    image: ichiky/woody_slave_database:latest
+    cap_add:
+      - SYS_NICE
+    depends_on:
+      - master_db
+    environment:
+      - MYSQL_DATABASE=woody
+      - MYSQL_ROOT_PASSWORD=pass
+    networks:
+      - db
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 3m
+      timeout: 20s
+      retries: 3
+      start_period: 30s
   api:
     image: ichiky/woody_api:latest
     restart: always
