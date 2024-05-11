@@ -17,7 +17,11 @@ services:
     restart: always
     links:
       - "db"
-
+  api:
+    image: ichiky/woody_apisec:latest
+    restart: always
+    links:
+      - "db"
   front:
     image: ichiky/woody_front:latest
     
