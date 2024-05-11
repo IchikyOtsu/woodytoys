@@ -17,7 +17,7 @@ docker tag ichiky/woody_rp:"$version" ichiky/woody_rp:latest
 
 
 docker build -t ichiky/woody_master_database:"$version" database/master
-docker tag ichiky/woody_master_database:"$version" correba/woody_master_database:latest
+docker tag ichiky/woody_master_database:"$version" ichiky/woody_master_database:latest
 
 docker build -t ichiky/woody_slave_database:"$version" database/slave
 docker tag ichiky/woody_slave_database:"$version" ichiky/woody_slave_database:latest
