@@ -40,4 +40,7 @@ docker push ichiky/woody_front:"$version"
 docker push ichiky/woody_front:latest
 
 docker push ichiky/woody_slave_database:"$version"
+docker push ichiky/woody_slave_database:latest
+
+docker push ichiky/woody_master_database:"$version"
 docker push ichiky/woody_master_database:latest
