@@ -15,8 +15,12 @@ docker tag ichiky/woody_apisec:"$version" ichiky/woody_apisec:latest
 docker build -t ichiky/woody_rp:"$version" reverse-proxy
 docker tag ichiky/woody_rp:"$version" ichiky/woody_rp:latest
 
-docker build -t ichiky/woody_database:"$version" database
-docker tag ichiky/woody_database:"$version" ichiky/woody_database:latest
+
+docker build -t ichiky/woody_master_database:"$version" database/master
+docker tag ichiky/woody_master_database:"$version" correba/woody_master_database:latest
+
+docker build -t ichiky/woody_slave_database:"$version" database/slave
+docker tag ichiky/woody_slave_database:"$version" ichiky/woody_slave_database:latest
 
 docker build -t ichiky/woody_front:"$version" front
 docker tag ichiky/woody_front:"$version" ichiky/woody_front:latest
