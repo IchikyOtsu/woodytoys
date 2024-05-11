@@ -27,7 +27,7 @@ def write_connect():
     db_password = os.environ.get('MYSQL_ROOT_PASSWORD')
 
     try:
-        mydb = connect(host=master_db_host, user='root', password=db_password, database=db_database, port=3306)
+        mydb = connect(host='master_db', user='root', password='pass', database='woody', port=3306)
         mycursor = mydb.cursor()
     except Error as e:
         print(e)
@@ -45,7 +45,7 @@ def read_connect():
     db_password = os.environ.get('MYSQL_ROOT_PASSWORD')
 
     try:
-        mydb = connect(host=slave_db_host, user='root', password=db_password, database=db_database, port=3306)
+        mydb = connect(host='slave_db', user='root', password='pass', database='woody', port=3306)
         mycursor = mydb.cursor()
     except Error as e:
         print(e)
