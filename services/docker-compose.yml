@@ -48,7 +48,7 @@ services:
       - REDIS_HOST=redis
     networks:
       - db
-      - api
+      - api2
       - cache
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/api/ping"]
@@ -99,6 +99,7 @@ services:
     networks:
       - front
       - api
+      - api2
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -111,3 +112,4 @@ networks:
   cache:
   db:
   front:
+  api2:
