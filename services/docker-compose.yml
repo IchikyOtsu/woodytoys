@@ -17,6 +17,10 @@ services:
       start_period: 30s
     networks:
       - db
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == vps.b.delcroix
 
   slave_db:
     image: ichiky/woody_slave_database:latest
@@ -35,6 +39,10 @@ services:
       start_period: 30s
     networks:
       - db
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == vps.b.delcroix
 
   api:
     image: ichiky/woody_api:latest
@@ -56,6 +64,10 @@ services:
       timeout: 20s
       retries: 3
       start_period: 20s
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == vps.b.delcroix
 
   api2:
     image: ichiky/woody_apisec:latest
@@ -77,6 +89,10 @@ services:
       timeout: 20s
       retries: 3
       start_period: 20s
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == vps.b.delcroix
 
   front:
     image: ichiky/woody_front:latest
@@ -100,12 +116,17 @@ services:
       - front
       - api
       - api2
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == vps.b.delcroix
 
   rabbitmq:
     image: rabbitmq:3-management
     ports:
       - "5672:5672"
       - "15672:15672"
+    
 
 networks:
   api:
