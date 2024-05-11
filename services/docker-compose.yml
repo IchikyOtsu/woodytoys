@@ -93,6 +93,7 @@ services:
     depends_on:
       - front
       - api
+      - api2
     networks:
       - front
       - api
