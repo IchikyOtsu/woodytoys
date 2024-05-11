@@ -17,7 +17,7 @@ services:
     restart: always
     links:
       - "db"
-  api:
+  api2:
     image: ichiky/woody_apisec:latest
     restart: always
     links:
