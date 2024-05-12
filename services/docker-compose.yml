@@ -54,6 +54,7 @@ services:
       - MYSQL_HOST_MASTER=master_db
       - MYSQL_HOST_SLAVE=slave_db
       - REDIS_HOST=redis
+      - RABBITMQ_HOST=rabbitmq
     networks:
       - db
       - api
@@ -79,6 +80,7 @@ services:
       - MYSQL_HOST_MASTER=master_db
       - MYSQL_HOST_SLAVE=slave_db
       - REDIS_HOST=redis
+      - RABBITMQ_HOST=rabbitmq
     networks:
       - db
       - api2
