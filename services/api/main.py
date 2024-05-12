@@ -12,6 +12,20 @@ cors = CORS(app)
 # Connexion à Redis
 redis_client = redis.Redis(host='redis', port=6379, db=0)
 
+# Connexion à RabbitMQ
+rabbitmq_host = os.environ.get('RABBITMQ_HOST', 'rabbitmq')
+connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitmq_host))
+channel = connection.channel()
+# Déclarer la file d'attente
+channel.queue_declare(queue='orders')
+
+
+def process_order(order_id, order):
+    status = woody.make_heavy_validation(order)
+    woody.save_order(order_id, status, order)
+    
+    # Envoyer un message à RabbitMQ
+    channel.basic_publish(exchange='', routing_key='orders', body=json.dumps({'order_id': order_id, 'status': status}))
 @app.get('/api/ping')
 def ping():
     return 'ping'
