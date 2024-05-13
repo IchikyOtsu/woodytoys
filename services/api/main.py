@@ -6,6 +6,7 @@ from flask_cors import CORS
 import redis
 import woody
 import os
+import pika
 app = Flask('my_api')
 cors = CORS(app)
 
