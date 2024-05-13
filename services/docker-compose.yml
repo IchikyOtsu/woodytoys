@@ -124,6 +124,9 @@ services:
       - "15672:15672"
     deploy:
       replicas: 1
+    networks:
+      - api
+      - api2
     
 
 networks:
